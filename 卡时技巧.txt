@@ -1,0 +1,10 @@
+const double CLOCKS_PER_SECOND=((clock_t)1000);
+if(1000*(clock()-t)>=900*CLOCKS_PER_SECOND) 
+    {
+         printf("%lld\n",ans);
+        exit(0);
+    }
+int main()
+{
+t=colck();
+}

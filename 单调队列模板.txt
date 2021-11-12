@@ -1,0 +1,12 @@
+/*ll head=1,tail=0,q[N];
+    for(int i=s;i<=n;++i)
+    {
+        while(head<=tail&&sum[q[tail]]>=sum[i-s])//如果>=说明队列里出现了降序
+            tail--;//把最前面的丢掉直到队列保持升序为止
+        q[++tail]=i-s;
+        //while(!q.empty()&&q.front.index<i-t)q.pop_front();
+        while(head<=tail&&q[head]<i-tail)//队列里的元素多于最大上限t就pop掉最先进入的值
+            head++;
+        if(head<=tail&&sum[i]-sum[q[head]]>=0)//如果队列里区间和>=0说明还有更大的平均值(前缀和嘛减后的值就是区间和)
+            return 1;
+    }*/

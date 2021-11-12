@@ -1,0 +1,38 @@
+add(position):
+  count[array[position]]++
+  if count[array[position]] == 3:
+    answer++
+
+remove(position):
+  count[array[position]]--
+  if count[array[position]] == 2:
+    answer--
+
+currentL = 0
+currentR = 0
+answer = 0
+count[] = 0
+for each query:
+  // currentL 应当到 L, currentR 应当到 R
+  while currentL < L:
+    remove(currentL)
+    currentL++
+  while currentL > L:
+    add(currentL)
+    currentL--
+  while currentR < R:
+    add(currentR)
+    currentR++
+  while currentR > R:
+    remove(currentR)
+    currentR--
+  output answer
+
+//排序
+ int sz=sqrt(n);
+    for(i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+        a[i]=a[i-1]^a[i];
+        pos[i]=i/sz;
+     }

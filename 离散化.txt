@@ -1,0 +1,21 @@
+ll mp[maxn];
+ll cnt=0;
+for (ll i=0;i<n;i++)
+        {
+            scanf("%lld", &l[i]);
+            mp[cnt++]=l[i];
+        } 
+	sort(mp, mp+cnt);
+        ll m=unique(mp, mp+cnt)-mp;
+       // ll k=m;
+ //for (ll i=1;i<m;i++) 注释代码为区间染色的特殊离散化
+    //    {
+      //      if (mp[i]-mp[i-1]>1) mp[k++]=mp[i-1]+1;
+      //  }
+      //  sort(mp, mp+k);
+ for(ll i=0;i<n;i++)
+        {
+            ll x=lower_bound(mp,mp+k,l[i])-mp+1;
+            ll y=lower_bound(mp,mp+k,r[i])-mp+1;
+            change(1,x,y,i+1); //线段树更新
+        }

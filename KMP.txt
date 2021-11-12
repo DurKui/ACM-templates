@@ -1,0 +1,58 @@
+/*
+ * @Author: Ykui.Chen 
+ * @Date: 2021-08-02 21:40:00 
+ * @Last Modified by: Ykui.Chen
+ * @Last Modified time: 2021-08-02 21:58:54
+ * 
+ * ABOUT: KMP 
+ */
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+const ll maxn=1e5+7;
+ll nextval[maxn];
+string s,t;
+void getnext()
+{
+    ll j=0;
+    ll k=-1;
+    nextval[0]=-1;
+    while(j<t.size())
+    {
+        if(k==-1||t[j]==t[k])
+        {
+            j++;
+            k++;
+            if(t[j]==t[k])
+            {
+                nextval[j]=nextval[k];
+            }
+            else nextval[j]=k;
+        }
+        else k=nextval[k];
+    }
+}
+bool KMP()
+{
+    ll i=0;
+    ll j=0;
+    getnext();
+    while(i<s.size()&&j<t.size())
+    {
+        if(j==-1||s[i]==t[j])
+        {
+            i++;
+            j++;
+        }
+        else j=nextval[j];
+    }
+    if(j>=t.size())
+    {
+        return true;
+    }
+    else return false;
+}
+int main()
+{
+    return 0;
+}

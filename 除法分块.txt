@@ -1,0 +1,24 @@
+我们可以把计算 ∑ N / i (1 <= i <= N) 的复杂度从 O(N) 降到 O(sqrt(N)) .
+具体操作如下:
+
+我们可以维护一个区间段 Begin 和 End , 一开始 Begin = 1.
+
+每次计算，我们就先从 Begin 的值计算出这个区间的 End:
+End = min( N , N / (N / Begin) ) (PS : 这里的 / 是指程序中的整除运算(下同) , 习惯化简的同学们注意了)
+
+然后 , 这个区间的 ∑ N / i (Begin <= i <= End) 就是 (N / Begin) * (End - Begin + 1) (PS : * 指乘法)
+
+下一个区间的 Begin = 当前区间的 End + 1 .
+
+再用一个变量 tot 累加答案就可以了。
+long long solve(int N){
+    int L= 1,R;
+    long long tot = 0;
+    while (L <= N){
+        R = N / (N / L);
+        tot += (N / L) * (R - L + 1);
+        L = R + 1;
+    }
+    return tot;
+}
+// 由于有 min() 函数，所以需要 cmath 头文件

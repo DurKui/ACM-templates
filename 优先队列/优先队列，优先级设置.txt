@@ -1,0 +1,22 @@
+比较运算符外置
+struct cmp
+{
+	bool operator() (fruit f1, fruit f2) // 重载括号
+	{
+		return f1.price < f2.price; // 等同于less
+	}
+};
+调用语法是：priority_queue<fruit,vector<fruit> , cmp > q;
+
+
+运算符重载 + 友元
+struct fruit
+{
+	string name;
+	double price;
+	friend bool operator< (fruit f1, fruit f2)
+	{
+		return f1.price < f2.price; // 相当于less,这是大顶堆，反之则是小顶堆
+	}
+} f1, f2, f3; //定义三个结构体变量
+priority_queue<fruit > q;

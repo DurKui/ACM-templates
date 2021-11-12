@@ -1,0 +1,113 @@
+//扫描线算法
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <math.h>
+#define lson (rt << 1)
+#define rson ((rt << 1) | 1)
+#define Size 100005
+//#define double long long
+using namespace std;
+struct stnode_t
+{
+    int l, r;
+    double len;
+    int cover;
+  //  int lb, rb;
+} ST[Size << 2];
+
+struct yline
+{
+    double x;
+    double y1, y2;
+    int flag;
+} edge[Size];
+
+double Y[Size];
+//建树
+void mkSTree(int l, int r, int rt)
+{
+    ST[rt].l = l;
+    ST[rt].r = r;
+    ST[rt].len = 0;
+    ST[rt].cover = 0;
+    if (r - l == 1)
+        return;
+    int mid = (l + r + 1) >> 1;
+    mkSTree(l, mid, lson);
+    mkSTree(mid, r, rson);
+}
+//更新当前节点的数据
+void updata(int rt)
+{
+    if (ST[rt].cover > 0)
+        ST[rt].len = Y[ST[rt].r] - Y[ST[rt].l];
+    else if (ST[rt].r - ST[rt].l == 1)
+        ST[rt].len = 0;
+    else
+        ST[rt].len = ST[lson].len + ST[rson].len;
+}
+//区间更新
+void update(double y1, double y2, int rt, int val)
+{
+    if (y1 <= Y[ST[rt].l] && Y[ST[rt].r] <= y2)
+        ST[rt].cover += val;
+    else
+    {
+        int mid = (ST[rt].l + ST[rt].r + 1) >> 1;
+        if (y1 < Y[mid])
+            update(y1, y2, lson, val);
+        if (Y[mid] < y2)
+            update(y1, y2, rson, val);
+    }
+    updata(rt);
+}
+
+bool cmp(yline &a, yline &b)
+{
+    if (a.x == b.x)
+        return a.y1 < b.y1;
+    return a.x < b.x;
+}
+int main()
+{
+
+    int n;
+    int kase = 0;
+    scanf("%d", &n);
+    double x1, y1, x2, y2;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%lf%lf%lf%lf", &x1, &y1, &x2, &y2);
+        edge[2 * i].x = x1;
+        edge[2 * i].y1 = y1;
+        edge[2 * i].y2 = y2;
+        edge[2 * i].flag = 1;
+        edge[2 * i + 1].x = x2;
+        edge[2 * i + 1].y1 = y1;
+        edge[2 * i + 1].y2 = y2;
+        edge[2 * i + 1].flag = -1;
+        Y[2 * i] = y2;
+        Y[2 * i + 1] = y1;
+    }
+
+    sort(Y, Y + 2 * n);
+    sort(edge, edge + 2 * n, cmp);
+    int cnt = 0;
+    for (int i = 0; i < 2 * n - 1; ++i)
+        if (Y[i] != Y[i + 1])
+            Y[cnt++] = Y[i];
+    Y[cnt++] = Y[2 * n - 1];
+    mkSTree(0, cnt - 1, 1);
+    double ans = 0;
+    for (int i = 0; i < 2 * n - 1; ++i)
+    {
+        update(edge[i].y1, edge[i].y2, 1, edge[i].flag);
+        //cout<<(edge[i+1].x-edge[i].x)<<endl;
+        ans += (edge[i + 1].x - edge[i].x) * ST[1].len;
+    }
+    //  printf("Test case #%d\n",++kase);
+    printf("%.0lf\n", ans);
+    return 0;
+}
